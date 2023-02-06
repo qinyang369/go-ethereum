@@ -387,6 +387,15 @@ func (ec *Client) SubscribeFilterLogs(ctx context.Context, q ethereum.FilterQuer
 	return ec.c.EthSubscribe(ctx, ch, "logs", arg)
 }
 
+// SubscribeFilterLogs subscribes to the results of a streaming filter query from fvm chain.
+func (ec *Client) SubscribeFilterLogsFvm(ctx context.Context, q ethereum.FilterQuery, ch chan<- []types.Log) (ethereum.Subscription, error) {
+	arg, err := toFilterArg(q)
+	if err != nil {
+		return nil, err
+	}
+	return ec.c.EthSubscribe(ctx, ch, "logs", arg)
+}
+
 func toFilterArg(q ethereum.FilterQuery) (interface{}, error) {
 	arg := map[string]interface{}{
 		"address": q.Addresses,
